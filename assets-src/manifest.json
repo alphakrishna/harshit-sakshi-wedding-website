@@ -1,0 +1,27 @@
+{
+  "project": "Harshit & Sakshi Wedding",
+  "asset_type": "flattened_composition_extractions",
+  "independent_layers": false,
+  "assets": [
+    "hero/full_reference.png",
+    "closing/full_reference.png",
+    "events/full_reference.png",
+    "story/full_reference.png",
+    "hero/couple_hero_framed.png",
+    "hero/radha_krishna_blessing_framed.png",
+    "hero/temple_arch_header.png",
+    "hero/lotus_left.png",
+    "hero/peacock_feather_right.png",
+    "closing/couple_closing_framed.png",
+    "closing/closing_plaque.png",
+    "events/haldi_card.png",
+    "events/mehendi_card.png",
+    "events/sangeet_card.png",
+    "events/wedding_card.png",
+    "events/celebrations_header.png",
+    "story/first_meeting.png",
+    "story/friendship.png",
+    "story/connection.png",
+    "story/proposal.png"
+  ]
+}

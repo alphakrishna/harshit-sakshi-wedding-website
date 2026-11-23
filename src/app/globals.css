@@ -1,0 +1,280 @@
+@import "tailwindcss";
+
+/* ── Vrindavan Divine Romance palette ─────────────────────────── */
+@theme {
+  --color-ivory: #f8f3eb;
+  --color-ivory-deep: #f1e6d4;
+  --color-parchment: #fbf8f2;
+  --color-blush: #eac7cc;
+  --color-blush-soft: #f5e4e2;
+  --color-gold: #b59a65;
+  --color-gold-light: #d9c391;
+  --color-gold-ink: #7a5c24; /* gold for text: passes 4.5:1 on ivory */
+  --color-green: #2f4a3a;
+  --color-sage: #69817b;
+  --color-plum: #453347;
+  --color-wine: #6b2340;
+
+  --font-display: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-body: var(--font-ebgaramond), "EB Garamond", Georgia, serif;
+  --font-script: var(--font-pinyon), "Pinyon Script", cursive;
+  --font-deva: var(--font-tiro), "Tiro Devanagari Hindi", serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:root {
+  color-scheme: light;
+  --gutter: 1rem;
+}
+
+@media (min-width: 640px) {
+  :root { --gutter: 1.5rem; }
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-ivory);
+  background-image:
+    radial-gradient(1200px 600px at 10% -10%, rgb(234 199 204 / 0.35), transparent 60%),
+    radial-gradient(900px 500px at 110% 20%, rgb(217 195 145 / 0.22), transparent 60%);
+  color: var(--color-plum);
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+body.is-locked {
+  overflow: hidden;
+  height: 100dvh;
+}
+
+::selection {
+  background: var(--color-blush);
+  color: var(--color-wine);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-wine);
+  outline-offset: 3px;
+}
+
+/* ── Shared building blocks ───────────────────────────────────── */
+@layer components {
+  .container-x {
+    width: 100%;
+    max-width: 72rem;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .section {
+    position: relative;
+    padding-block: 4.5rem;
+  }
+  @media (min-width: 768px) {
+    .section { padding-block: 6.5rem; }
+  }
+
+  .eyebrow {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--color-gold-ink);
+  }
+
+  .script-title {
+    font-family: var(--font-script);
+    font-weight: 400;
+    line-height: 1.05;
+    color: var(--color-gold-ink);
+  }
+
+  /* soft paper card used for event details, RSVP, venue */
+  .paper-card {
+    background: linear-gradient(180deg, #fffdf9, var(--color-parchment));
+    border: 1px solid rgb(181 154 101 / 0.45);
+    border-radius: 1.25rem;
+    box-shadow:
+      0 1px 0 rgb(255 255 255 / 0.8) inset,
+      0 18px 40px -24px rgb(69 51 71 / 0.35);
+  }
+
+  /* fade the hard edges left over from trimming baked-in text */
+  .fade-bottom {
+    mask-image: linear-gradient(to bottom, #000 82%, transparent 100%);
+  }
+  .fade-right {
+    mask-image: linear-gradient(to right, #000 80%, transparent 100%);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 3rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 999px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: 0.04em;
+    transition: transform 0.25s var(--ease-soft), box-shadow 0.25s var(--ease-soft), background-color 0.25s;
+  }
+  .btn:active { transform: scale(0.97); }
+
+  .btn-primary {
+    background: linear-gradient(180deg, #8d2c52, var(--color-wine));
+    color: #fff8f0;
+    box-shadow: 0 10px 24px -12px rgb(107 35 64 / 0.7);
+  }
+  .btn-primary:hover { box-shadow: 0 14px 30px -12px rgb(107 35 64 / 0.8); }
+
+  .btn-outline {
+    border: 1px solid var(--color-gold);
+    color: var(--color-wine);
+    background: rgb(255 253 249 / 0.7);
+  }
+  .btn-outline:hover { background: #fff; }
+
+  .btn-green {
+    background: var(--color-green);
+    color: #fbf6ec;
+  }
+}
+
+/* Elements animated by GSAP start hidden only when JS + motion are available. */
+.js-motion [data-reveal],
+.js-motion [data-hero] {
+  opacity: 0;
+}
+
+/* ── Falling petals (pure CSS) ────────────────────────────────── */
+@keyframes petal-fall {
+  0% { transform: translate3d(0, -10vh, 0) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.85; }
+  100% { transform: translate3d(var(--drift, 40px), 110vh, 0) rotate(var(--spin, 540deg)); opacity: 0; }
+}
+
+.petal {
+  position: absolute;
+  top: 0;
+  width: 14px;
+  height: 11px;
+  border-radius: 80% 0 80% 0;
+  background: linear-gradient(135deg, #f6c9d1, #e79aab);
+  opacity: 0;
+  animation: petal-fall var(--dur, 14s) linear var(--delay, 0s) infinite;
+  will-change: transform;
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+
+/* ── Interactive flourishes ───────────────────────────────────── */
+@keyframes seal-pulse {
+  0% { box-shadow: 0 0 0 0 rgb(217 195 145 / 0.65); }
+  70% { box-shadow: 0 0 0 18px rgb(217 195 145 / 0); }
+  100% { box-shadow: 0 0 0 0 rgb(217 195 145 / 0); }
+}
+.seal-pulse { animation: seal-pulse 2.2s ease-out infinite; }
+
+/* moving gold sheen across text */
+@keyframes gold-sheen {
+  0% { background-position: 200% 50%; }
+  100% { background-position: -200% 50%; }
+}
+.gold-text {
+  background: linear-gradient(100deg, #8a6a2e 0%, #b59a65 30%, #f3dca7 45%, #b59a65 60%, #8a6a2e 100%);
+  background-size: 300% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gold-sheen 6s linear infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0; transform: scale(0.4) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1) rotate(45deg); }
+}
+.sparkle {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: radial-gradient(circle, #fff8e1 0%, #e6cf95 40%, transparent 70%);
+  clip-path: polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%);
+  animation: twinkle var(--tw, 3s) ease-in-out var(--td, 0s) infinite;
+  pointer-events: none;
+}
+
+@keyframes swing {
+  0%, 100% { transform: rotate(-5deg); }
+  50% { transform: rotate(5deg); }
+}
+.swing { transform-origin: top center; animation: swing 3.6s ease-in-out infinite; }
+
+/* countdown digit flip */
+@keyframes digit-in {
+  0% { transform: translateY(-60%) rotateX(70deg); opacity: 0; }
+  100% { transform: translateY(0) rotateX(0); opacity: 1; }
+}
+.digit-flip { display: inline-block; animation: digit-in 0.45s var(--ease-soft); }
+
+/* light sweep across event cards on hover/tilt */
+.card-shine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at var(--mx, 50%) var(--my, 0%), rgb(255 255 255 / 0.55), transparent 45%);
+  opacity: 0;
+  transition: opacity 0.4s;
+  mix-blend-mode: soft-light;
+}
+.group:hover .card-shine, .group:focus-visible .card-shine { opacity: 1; }
+
+/* handwriting-style wipe for script titles (set up by GSAP) */
+.js-motion [data-write] { clip-path: inset(-25% 110% -25% -10%); }
+
+/* scroll progress */
+.scroll-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: 3px;
+  z-index: 45;
+  transform-origin: left;
+  transform: scaleX(0);
+  background: linear-gradient(90deg, #d9c391, #b59a65, #6b2340);
+}
+
+/* ── Reduced motion: switch everything decorative off ──────────── */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .petal { display: none; }
+  .js-motion [data-reveal], .js-motion [data-hero] { opacity: 1; }
+  .js-motion [data-write] { clip-path: none; }
+  .sparkle, .seal-pulse { display: none; }
+  .gold-text { animation: none; background-position: 50% 50%; }
+}
