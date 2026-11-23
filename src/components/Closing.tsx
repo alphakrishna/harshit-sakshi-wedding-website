@@ -75,6 +75,19 @@ export function Closing() {
         <ShareButtons className="mt-4" />
         {couple.hashtag && <p className="mt-6 font-display text-xl text-gold-ink">{couple.hashtag}</p>}
         <p className="mt-10 text-sm text-plum/70">With love and blessings · {couple.groom} &amp; {couple.bride}</p>
+        <p className="mt-2 text-xs text-plum/80">
+          Crafted with <span aria-hidden="true">♡</span>
+          <span className="sr-only">love</span> by{" "}
+          <a
+            href="https://www.aaurigotech.com/"
+            target="_blank"
+            rel="noopener"
+            className="underline decoration-gold/50 underline-offset-2 transition hover:text-wine"
+          >
+            Aaurigo Tech
+            <span className="sr-only"> (opens in a new tab)</span>
+          </a>
+        </p>
       </div>
     </section>
   );
