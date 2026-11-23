@@ -197,8 +197,8 @@ export const wedding = {
   },
 
   site: {
-    /** TODO: set to the final hosted URL (needed for WhatsApp/OG previews) */
-    url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://harshit-sakshi.vercel.app",
+    /** Live URL (Cloudflare Pages). Change if you add a custom domain. Needed for WhatsApp/OG previews. */
+    url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://harshit-sakshi-wedding-website.pages.dev",
     title: "Harshit & Sakshi | Wedding Invitation",
     description:
       "Harshit and Sakshi invite you to celebrate their wedding on 20 February 2027 in Faridabad. Event details, venue and RSVP.",
